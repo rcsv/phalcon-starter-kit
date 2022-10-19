@@ -1,5 +1,5 @@
-# phalcon-starter-kit
-a phalcon starter kit with docker-compose
+# Phalcon Starter Kit
+phalcon-starter-kit is a phalcon starter kit with docker-compose.
 
 ## Overview
 
