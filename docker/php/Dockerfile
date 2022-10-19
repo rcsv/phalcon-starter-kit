@@ -45,4 +45,22 @@ ARG PHALCON_EXT_PATH=php/64bits
 
 
 # install phalcon-related packages
-#RUN set -xe && \
+RUN set -xe && \
+    # install PSR
+    curl -LO https://github.com/jbboehr/php-psr/archive/v${PSR_VERSION}.tar.gz && \
+    tar zxf ${PWD}/v${PSR_VERSION}.tar.gz && \
+    # install Phalcon
+    curl -LO https://github.com/phalcon/cphalcon/archive/v${PHALCON_VERSION}.tar.gz && \
+    tar zxf ${PWD}/v${PHALCON_VERSION}.tar.gz && \
+    docker-php-ext-install -j $(getconf _NPROCESSORS_ONLN) \
+        ${PWD}/php-psr-${PSR_VERSION} \
+        ${PWD}/cphalcon-${PHALCON_VERSION}/build/${PHALCON_EXT_PATH} \
+    && \
+    # remove tmp file
+    rm -r \
+        ${PWD}/v${PSR_VERSION}.tar.gz \
+        ${PWD}/php-psr-${PSR_VERSION} \
+        ${PWD}/v{$PHALCON_VERSION}.tar.gz \
+        ${PWD}/cphalcon-${PHALCON_VERSION} \
+    && \
+    php -m
