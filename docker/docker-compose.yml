@@ -5,6 +5,10 @@ services:
 		container_name: mysql
 		image: mysql:8.0.22
 		environment:
-			MYSQL_DATABASE: ${MYSQL_DATABASE_NAME}
+			MYSQL_DATABASE: ${STR_MYSQL_DATABASE}
+            MYSQL_USER: ${STR_MYSQL_USER}
+            MYSQL_PASSWORD: ${STR_MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${STR_MYSQL_ROOT_PASSWORD}
+        command: ["mysqld", "--character-set-server=${STR_MYSQL_CHARSET}", "--collation-server=${STR_MYSQL_CHARSET_CI}"]
 	php:
 	nginx:
