@@ -1,14 +1,73 @@
-version: '3'
+version: "3.9"
 
 services:
-	mysql:
-		container_name: mysql
-		image: mysql:8.0.22
-		environment:
+    # --- mysql
+    mysql:
+        container_name: mysql
+        image: mysql:8.0.22
+        environment:
 			MYSQL_DATABASE: ${STR_MYSQL_DATABASE}
             MYSQL_USER: ${STR_MYSQL_USER}
             MYSQL_PASSWORD: ${STR_MYSQL_PASSWORD}
             MYSQL_ROOT_PASSWORD: ${STR_MYSQL_ROOT_PASSWORD}
         command: ["mysqld", "--character-set-server=${STR_MYSQL_CHARSET}", "--collation-server=${STR_MYSQL_CHARSET_CI}"]
-	php:
-	nginx:
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - ./mysql/data:/var/lib/mysql:rw
+        ports:
+            - "3306:3306"
+        restart: always
+        logging:
+            options:
+                max-size: "1m"
+                max-file: "3"
+                
+    # --- php fpm
+    php:
+        container_name: php
+        build:
+            context: ./php
+            dockerfile: Dockerfile
+            args:
+                - WITH_XDEBUG=true
+        working_dir: /var/www/html
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - ./php/asset/timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
+            - ./php/asset/file.ini:/usr/local/etc/php/conf.d/file.ini
+            - ./phalcon:/var/www/html:rw
+        command: bash -c "php-fpm"
+        restart: always
+        logging:
+            options:
+                max-size: "1m"
+                max-file: "3"
+                
+    # --- webserver nginx
+    nginx:
+        container_name: nginx
+        image: nginx:1.17.8
+        command: ["nginx", "-g", "daemon off;"]
+        workding_dir: /var/www/html
+        depends_on:
+            - php
+            - mysql
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+            - ./nginx/asset/:/etc/nginx/conf.d/
+            - ./nginx/log:/var/log/nginx/:rw
+            - ./phalcon:/var/www/html:rw
+        ports:
+            - "80:80"
+        links:
+            - php
+        restart: always
+        logging:
+            options:
+                max-size: "1m"
+                max-file: "3"
+                
+                
