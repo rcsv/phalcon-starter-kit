@@ -9,7 +9,7 @@ a phalcon starter kit with docker-compose
 ## how to install
 
 ```bash
-$ git clone rcsv/phalcon-starter-kit
+$ git clone https://github.com/rcsv/phalcon-starter-kit.git
 $ cd phalcon-starter-kit/docker
 $ docker-compose up -d
 ```
