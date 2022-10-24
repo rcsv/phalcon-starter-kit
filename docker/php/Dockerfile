@@ -13,6 +13,7 @@ RUN apt update && apt install -y \
     libmcrypt4 \
     libzip-dev \
     libonig-dev \
+    unzip \
     && docker-php-ext-install \
         pdo \
         pdo_mysql \
