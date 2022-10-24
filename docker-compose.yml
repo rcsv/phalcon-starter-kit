@@ -38,7 +38,7 @@ services:
             - ./docker/php/conf.d/timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
             - ./docker/php/conf.d/file.ini:/usr/local/etc/php/conf.d/file.ini
             - ./docker/php/conf.d/50-phalcon.ini:/usr/local/etc/php/conf.d/50-phalcon.ini
-            - ./app:/var/www/html:rw
+            - ./project:/var/www/html:rw
         command: bash -c "php-fpm"
         restart: always
         logging:
@@ -60,7 +60,7 @@ services:
             - /etc/timezone:/etc/timezone:ro
             - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
             - ./log/nginx/:/var/log/nginx/:rw
-            - ./app:/var/www/html:rw
+            - ./project:/var/www/html:rw
         ports:
             - "80:80"
         links:
