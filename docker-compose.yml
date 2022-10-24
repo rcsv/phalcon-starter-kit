@@ -14,7 +14,7 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /etc/timezone:/etc/timezone:ro
-            - ./mysql/data:/var/lib/mysql:rw
+            - ./docker/mysql/data:/var/lib/mysql:rw
         ports:
             - "3306:3306"
         restart: always
@@ -27,7 +27,7 @@ services:
     php:
         container_name: php
         build:
-            context: ./php
+            context: ./docker/php
             dockerfile: Dockerfile
             args:
                 - WITH_XDEBUG=true
@@ -35,9 +35,10 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /etc/timezone:/etc/timezone:ro
-            - ./php/asset/timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
-            - ./php/asset/file.ini:/usr/local/etc/php/conf.d/file.ini
-            - ./phalcon:/var/www/html:rw
+            - ./docker/php/conf.d/timezone.ini:/usr/local/etc/php/conf.d/timezone.ini
+            - ./docker/php/conf.d/file.ini:/usr/local/etc/php/conf.d/file.ini
+            - ./docker/php/conf.d/50-phalcon.ini:/usr/local/etc/php/conf.d/50-phalcon.ini
+            - ./app:/var/www/html:rw
         command: bash -c "php-fpm"
         restart: always
         logging:
@@ -57,9 +58,9 @@ services:
         volumes:
             - /etc/localtime:/etc/localtime:ro
             - /etc/timezone:/etc/timezone:ro
-            - ./nginx/asset/:/etc/nginx/conf.d/
-            - ./nginx/log:/var/log/nginx/:rw
-            - ./phalcon:/var/www/html:rw
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+            - ./log/nginx/:/var/log/nginx/:rw
+            - ./app:/var/www/html:rw
         ports:
             - "80:80"
         links:
