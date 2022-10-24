@@ -24,7 +24,7 @@ and, then:
 $ docker exec -it php /bin/bash
 ```
 
-to check webserver: check [localhost](https://localhost/)
+to check webserver: check [localhost/info.php](https://localhost/info.php)
 
 ## Reference
 - [Phalcon - A full-stack PHP fraemwork delivered as a C-extension](https://phalcon.io/en-us)
