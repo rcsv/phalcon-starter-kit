@@ -14,7 +14,7 @@ It is not easy to build a Phalcon's environment... It is not an exaggeration to 
 
 ```bash
 $ git clone https://github.com/rcsv/phalcon-starter-kit.git
-$ cd phalcon-starter-kit/docker
+$ cd phalcon-starter-kit/
 $ docker-compose up -d
 ```
 
